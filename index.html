@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>甘特图生成器</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- SheetJS：Excel 解析（离线时 CSV 仍可用） -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <header class="toolbar">
+    <div class="brand"><h1>甘特图生成器</h1></div>
+    <div class="tb-group">
+      <button id="btn-add-task" class="primary">＋ 添加任务</button>
+      <button id="btn-link">连线模式</button>
+      <button id="btn-sample">示例数据</button>
+    </div>
+    <div class="tb-group">
+      <button id="btn-import-csv">导入 CSV</button>
+      <button id="btn-import-excel">导入 Excel</button>
+      <button id="btn-import-json">导入 JSON</button>
+    </div>
+    <div class="tb-group">
+      <button id="btn-export-json">导出 JSON</button>
+      <button id="btn-export-png">导出 PNG</button>
+      <button id="btn-print">打印</button>
+    </div>
+    <div class="tb-group zoom">
+      <button data-zoom="day" class="active">日</button>
+      <button data-zoom="week">周</button>
+      <button data-zoom="month">月</button>
+    </div>
+    <div class="tb-group">
+      <button id="btn-theme-picker">🎨 配色</button>
+      <button id="btn-theme">深色</button>
+    </div>
+    <input type="file" id="file-input" hidden>
+  </header>
+
+  <div class="gantt">
+    <div class="gantt-left" id="gantt-left"></div>
+    <div class="gantt-right" id="gantt-right">
+      <svg id="gantt-svg"></svg>
+    </div>
+  </div>
+
+  <section class="table-wrap">
+    <h2>任务列表</h2>
+    <div class="table-scroll">
+      <table id="task-table">
+        <thead>
+          <tr>
+            <th>项目</th>
+            <th>任务名</th>
+            <th>开始日期</th>
+            <th>结束日期</th>
+            <th>进度</th>
+            <th>前置任务</th>
+            <th>负责人</th>
+            <th>里程碑</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="task-tbody"></tbody>
+      </table>
+    </div>
+    <p class="tip">提示：拖拽条形移动日期、拖拽左右边缘改起止；「连线模式」建立依赖；点击日期可用滚轮/拖动选择；关键路径以红框标出。</p>
+  </section>
+
+  <div id="tooltip"></div>
+  <div id="hint"></div>
+
+  <script src="themes.js"></script>
+  <script src="data.js"></script>
+  <script src="scheduler.js"></script>
+  <script src="gantt.js"></script>
+  <script src="table.js"></script>
+  <script src="import.js"></script>
+  <script src="themeui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
