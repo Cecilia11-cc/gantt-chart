@@ -1,6 +1,6 @@
 <div align="center">
 
-# 甘特图生成器
+# [甘特图生成器](https://cecilia11-cc.github.io/gantt-chart/)
 
 <a href="https://cecilia11-cc.github.io/gantt-chart/"><img src="assets/badge-live.png" alt="在线访问"></a>
 <a href="https://github.com/Cecilia11-cc/gantt-chart"><img src="assets/badge-github.png" alt="GitHub 仓库"></a>
