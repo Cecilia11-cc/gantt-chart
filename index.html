@@ -9,6 +9,38 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
+  <!-- 进入时的介绍页 -->
+  <div id="intro" class="intro">
+    <div class="intro-card">
+      <div class="intro-emoji">📊</div>
+      <h1 class="intro-title">甘特图生成器</h1>
+      <p class="intro-sub">纯前端 · 零安装 · 优雅的项目排期工具</p>
+
+      <div class="intro-illus" aria-hidden="true">
+        <div class="illus-row"><div class="illus-bar" style="width:34%;background:#2a78d6;--d:.05s"></div></div>
+        <div class="illus-row"><div class="illus-bar" style="width:56%;background:#eb6834;--d:.12s"></div></div>
+        <div class="illus-row"><div class="illus-bar" style="width:22%;background:#1baf7a;--d:.19s"></div></div>
+        <div class="illus-row"><div class="illus-bar" style="width:70%;background:#4a3aa7;--d:.26s"></div></div>
+        <div class="illus-row"><div class="illus-bar" style="width:40%;background:#e34948;--d:.33s"></div></div>
+        <div class="illus-today" style="left:62%"></div>
+      </div>
+
+      <p class="intro-desc">输入任务、拖拽排期，自动生成关键路径与项目进度；支持多项目、资源冲突提示与多套色系。数据保存在本地浏览器，无需登录。</p>
+
+      <div class="intro-features">
+        <div class="feat"><span class="feat-icon">🖱</span><b>拖拽排期</b><small>拖条移动 · 拖边改起止</small></div>
+        <div class="feat"><span class="feat-icon">🔗</span><b>关键路径</b><small>连线建依赖 · 自动计算</small></div>
+        <div class="feat"><span class="feat-icon">🎨</span><b>12 套色系</b><small>悬停预览 · 自定义配色</small></div>
+        <div class="feat"><span class="feat-icon">📅</span><b>滚轮日期</b><small>年 / 月 / 日滚轮选择</small></div>
+        <div class="feat"><span class="feat-icon">👥</span><b>多项目资源</b><small>分组汇总 · 冲突提示</small></div>
+        <div class="feat"><span class="feat-icon">📤</span><b>导入导出</b><small>CSV / Excel / JSON / PNG</small></div>
+      </div>
+
+      <button id="intro-start" class="intro-start">开始使用 →</button>
+      <label class="intro-skip"><input type="checkbox" id="intro-noshow"> 下次不再显示</label>
+    </div>
+  </div>
+
   <header class="toolbar">
     <div class="brand"><h1>甘特图生成器</h1></div>
     <div class="tb-group">

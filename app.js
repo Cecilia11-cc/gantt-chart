@@ -94,6 +94,19 @@ window.App = (function () {
     });
   }
 
+  function setupIntro() {
+    var intro = document.getElementById('intro');
+    var start = document.getElementById('intro-start');
+    var noshow = document.getElementById('intro-noshow');
+    if (!intro || !start) return;
+    if (localStorage.getItem('gantt-intro-hidden') === '1') { intro.classList.add('gone'); return; }
+    start.addEventListener('click', function () {
+      if (noshow && noshow.checked) { try { localStorage.setItem('gantt-intro-hidden', '1'); } catch (e) {} }
+      intro.classList.add('hide');
+      setTimeout(function () { intro.classList.add('gone'); }, 340);
+    });
+  }
+
   function init() {
     document.body.setAttribute('data-theme', AppState.theme());
     if (!AppState.load()) { AppState.setTasks(AppState.sample()); AppState.save(); }
@@ -101,6 +114,7 @@ window.App = (function () {
     bindToolbar();
     ThemeUI.init();
     renderAll();
+    setupIntro();
   }
 
   return { init: init, renderChart: renderChart, refreshTable: refreshTable, renderAll: renderAll };
