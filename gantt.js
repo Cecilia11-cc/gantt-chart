@@ -127,15 +127,6 @@ window.Gantt = (function () {
     /* 表头背景 */
     P.push('<rect x="0" y="0" width="' + L.chartW + '" height="' + HEADER_H + '" fill="' + c.surface + '"/>');
 
-    /* 周末底纹（日视图） */
-    if (zoom === 'day') {
-      for (var wd = L.viewStart; wd <= L.viewEnd; wd++) {
-        if (DateUtil.isWeekend(wd)) {
-          P.push('<rect x="' + dayToX(wd) + '" y="' + HEADER_H + '" width="' + L.zw + '" height="' + (L.totalH - HEADER_H) + '" fill="' + (c.ink2 === '#c3c2b7' ? '#f4f3ee' : '#242422') + '"/>');
-        }
-      }
-    }
-
     /* 竖向网格线 + 表头标签 */
     ticks.forEach(function (tk) {
       P.push('<line x1="' + tk.x + '" y1="' + HEADER_H + '" x2="' + tk.x + '" y2="' + L.totalH + '" stroke="' + c.grid + '" stroke-width="1"/>');
@@ -273,9 +264,10 @@ window.Gantt = (function () {
         var t = r.task;
         var chip = crit[t.id] ? '<span class="lp-crit">关键</span>' : '';
         var conf = _conf[t.id] ? '<span class="lp-conf">冲突</span>' : '';
+        var res = t.resource ? '<span class="lp-resource" title="负责人">' + esc(t.resource) + '</span>' : '';
         var mile = t.milestone ? '◆ ' : '';
         html.push('<div class="lp-task" data-id="' + t.id + '" style="height:' + r.h + 'px">'
-          + '<span class="lp-name">' + mile + esc(t.name) + '</span>' + conf + chip + '</div>');
+          + '<span class="lp-name">' + mile + esc(t.name) + '</span>' + res + conf + chip + '</div>');
       }
     });
     document.getElementById('gantt-left').innerHTML = html.join('');

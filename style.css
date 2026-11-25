@@ -132,6 +132,16 @@ body {
   padding: 1px 5px;
   flex: none;
 }
+.lp-resource {
+  font-size: 10px;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  border: 1px solid var(--grid);
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex: none;
+  white-space: nowrap;
+}
 
 /* ---------- 表格 ---------- */
 .table-wrap { margin: 16px; }
