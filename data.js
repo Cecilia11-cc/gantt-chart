@@ -49,6 +49,8 @@ function taskDuration(t) {
 /* 全局数据与调色板 */
 window.AppState = (function () {
   var KEY = 'gantt-chart-data-v1';
+  var FONT_KEY = 'gantt-font-family';
+  var FS_KEY = 'gantt-font-size';
   var theme = localStorage.getItem('gantt-theme') || 'light';
 
   /* 兜底色板（正常由 Themes 色系提供） */
@@ -131,6 +133,18 @@ window.AppState = (function () {
     localStorage.setItem('gantt-theme', t);
   }
 
+  /* 字体（family）与字号缩放系数，均持久化到 localStorage */
+  function fontFamily() {
+    return localStorage.getItem(FONT_KEY) || "system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif";
+  }
+  function setFontFamily(f) { try { localStorage.setItem(FONT_KEY, f); } catch (e) {} }
+
+  function fontScale() {
+    var v = parseFloat(localStorage.getItem(FS_KEY));
+    return isFinite(v) && v > 0 ? v : 1;
+  }
+  function setFontScale(n) { try { localStorage.setItem(FS_KEY, String(n)); } catch (e) {} }
+
   function sample() {
     var mk = function (name, project, start, len, opts) {
       opts = opts || {};
@@ -161,6 +175,8 @@ window.AppState = (function () {
     projectColor: projectColor, getTasks: getTasks, setTasks: setTasks,
     addTask: addTask, removeTask: removeTask, getTask: getTask,
     save: save, load: load, setTheme: setTheme, sample: sample,
-    theme: function () { return theme; }
+    theme: function () { return theme; },
+    fontFamily: fontFamily, setFontFamily: setFontFamily,
+    fontScale: fontScale, setFontScale: setFontScale
   };
 })();

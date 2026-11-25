@@ -33,6 +33,18 @@ window.App = (function () {
     renderAll();
   }
 
+  function applyFont() {
+    document.documentElement.style.setProperty('--font-family', AppState.fontFamily());
+    document.documentElement.style.setProperty('--fs', AppState.fontScale());
+  }
+
+  function syncFontControls() {
+    var ff = document.getElementById('font-family');
+    var fz = document.getElementById('font-size');
+    if (ff) ff.value = AppState.fontFamily();
+    if (fz) fz.value = String(AppState.fontScale());
+  }
+
   function setZoom(z) {
     Gantt.setZoom(z);
     document.querySelectorAll('[data-zoom]').forEach(function (b) {
@@ -77,6 +89,11 @@ window.App = (function () {
       b.addEventListener('click', function () { setZoom(b.getAttribute('data-zoom')); });
     });
 
+    var ff = document.getElementById('font-family');
+    var fz = document.getElementById('font-size');
+    if (ff) ff.addEventListener('change', function () { AppState.setFontFamily(ff.value); applyFont(); Gantt.render(); });
+    if (fz) fz.addEventListener('change', function () { AppState.setFontScale(parseFloat(fz.value)); applyFont(); Gantt.render(); });
+
     document.getElementById('file-input').addEventListener('change', function (e) {
       var f = e.target.files[0];
       if (f) ImportExport.handleFile(f, pendingKind);
@@ -109,6 +126,8 @@ window.App = (function () {
 
   function init() {
     document.body.setAttribute('data-theme', AppState.theme());
+    applyFont();
+    syncFontControls();
     if (!AppState.load()) { AppState.setTasks(AppState.sample()); AppState.save(); }
     Gantt.bind();
     bindToolbar();

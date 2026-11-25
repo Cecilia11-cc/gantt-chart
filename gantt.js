@@ -6,6 +6,9 @@ window.Gantt = (function () {
   var DAY = 86400000;
 
   var ROW_H = 30, PROJECT_H = 34, HEADER_H = 52, BAR_H = 18;
+  var FONT = 'system-ui, Segoe UI, sans-serif';
+  var FS = 11, FS_TOP = 12;   // SVG 文字基准字号
+  var _scale = 1;             // 字号缩放系数
   var ZOOM_W = { day: 26, week: 10, month: 4 };
 
   var zoom = 'day';
@@ -76,7 +79,7 @@ window.Gantt = (function () {
       y += PROJECT_H;
       map[p].forEach(function (t) { rows.push({ type: 'task', task: t, y: y, h: ROW_H }); y += ROW_H; });
     });
-    var totalH = y + 28;
+    var totalH = y + Math.round(28 * _scale);
     var chartW = (viewEnd - viewStart + 1) * zw;
 
     layout = { zw: zw, viewStart: viewStart, viewEnd: viewEnd, chartW: chartW, totalH: totalH, rows: rows, groups: groups };
@@ -113,6 +116,15 @@ window.Gantt = (function () {
 
   /* ---------------- 渲染 ---------------- */
   function render() {
+    _scale = AppState.fontScale();
+    ROW_H = Math.round(30 * _scale);
+    PROJECT_H = Math.round(34 * _scale);
+    HEADER_H = Math.round(52 * _scale);
+    BAR_H = Math.round(18 * _scale);
+    FONT = AppState.fontFamily();
+    FS = Math.round(11 * _scale);
+    FS_TOP = Math.round(12 * _scale);
+
     var tasks = AppState.getTasks();
     var L = computeLayout(tasks);
     var c = AppState.chrome();
@@ -130,11 +142,11 @@ window.Gantt = (function () {
     /* 竖向网格线 + 表头标签 */
     ticks.forEach(function (tk) {
       P.push('<line x1="' + tk.x + '" y1="' + HEADER_H + '" x2="' + tk.x + '" y2="' + L.totalH + '" stroke="' + c.grid + '" stroke-width="1"/>');
-      P.push('<text x="' + (tk.x + tk.w / 2) + '" y="' + (HEADER_H - 8) + '" text-anchor="middle" font-size="11" fill="' + c.ink2 + '" font-family="system-ui, Segoe UI, sans-serif">' + tk.label + '</text>');
+      P.push('<text x="' + (tk.x + tk.w / 2) + '" y="' + (HEADER_H - 8) + '" text-anchor="middle" font-size="' + FS + '" fill="' + c.ink2 + '" font-family="' + FONT + '">' + tk.label + '</text>');
     });
     /* 顶层标签 */
     tops.forEach(function (tp) {
-      P.push('<text x="' + (tp.x + tp.w / 2) + '" y="' + 16 + '" text-anchor="middle" font-size="12" font-weight="600" fill="' + c.ink + '" font-family="system-ui, Segoe UI, sans-serif">' + tp.label + '</text>');
+      P.push('<text x="' + (tp.x + tp.w / 2) + '" y="' + 16 + '" text-anchor="middle" font-size="' + FS_TOP + '" font-weight="600" fill="' + c.ink + '" font-family="' + FONT + '">' + tp.label + '</text>');
       P.push('<line x1="' + tp.x + '" y1="0" x2="' + tp.x + '" y2="' + HEADER_H + '" stroke="' + c.baseline + '" stroke-width="1"/>');
     });
 
@@ -201,11 +213,11 @@ window.Gantt = (function () {
         P.push('<rect data-handle="right" x="' + (bx + bw - 3) + '" y="' + by + '" width="6" height="' + BAR_H + '" fill="transparent" style="cursor:ew-resize"/>');
         /* 标签：任务名 + 负责人 */
         var label = t.resource ? t.name + ' · ' + t.resource : t.name;
-        var needWidth = label.length * 6.5 + 10;
+        var needWidth = label.length * (6.5 * _scale) + 10;
         if (bw > needWidth + 12) {
-          P.push('<text x="' + (bx + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="11" fill="' + textColorFor(color) + '" font-family="system-ui, Segoe UI, sans-serif">' + esc(label) + '</text>');
+          P.push('<text x="' + (bx + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="' + FS + '" fill="' + textColorFor(color) + '" font-family="' + FONT + '">' + esc(label) + '</text>');
         } else {
-          P.push('<text x="' + (bx + bw + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="11" fill="' + c.ink2 + '" font-family="system-ui, Segoe UI, sans-serif">' + esc(label) + '</text>');
+          P.push('<text x="' + (bx + bw + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="' + FS + '" fill="' + c.ink2 + '" font-family="' + FONT + '">' + esc(label) + '</text>');
         }
         P.push('</g>');
       }
@@ -237,7 +249,7 @@ window.Gantt = (function () {
   }
 
   function labelText(text, x, y, fill) {
-    return '<text x="' + x + '" y="' + y + '" font-size="11" fill="' + fill + '" font-family="system-ui, Segoe UI, sans-serif">' + esc(text) + '</text>';
+    return '<text x="' + x + '" y="' + y + '" font-size="' + FS + '" fill="' + fill + '" font-family="' + FONT + '">' + esc(text) + '</text>';
   }
 
   function esc(s) {
