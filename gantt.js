@@ -193,22 +193,19 @@ window.Gantt = (function () {
         var rx = 3;
         P.push('<g data-id="' + t.id + '">');
         P.push('<rect data-handle="body" x="' + bx + '" y="' + by + '" width="' + bw + '" height="' + BAR_H + '" rx="' + rx + '" fill="' + color + '" stroke="' + (isCrit ? AppState.criticalColor() : 'rgba(0,0,0,0)') + '" stroke-width="' + (isCrit ? 2 : 0) + '" style="cursor:move"/>');
-        if (t.progress > 0) {
-          var pw = bw * Math.min(100, t.progress) / 100;
-          P.push('<rect x="' + bx + '" y="' + by + '" width="' + pw + '" height="' + BAR_H + '" rx="' + rx + '" fill="' + (c.ink === '#ffffff' ? 'rgba(255,255,255,0.28)' : 'rgba(0,0,0,0.22)') + '"/>');
-        }
         if (isSource) {
           P.push('<rect x="' + (bx - 2) + '" y="' + (by - 2) + '" width="' + (bw + 4) + '" height="' + (BAR_H + 4) + '" rx="' + (rx + 2) + '" fill="none" stroke="' + c.ink + '" stroke-width="1" stroke-dasharray="4 2"/>');
         }
         /* 拖拽手柄 */
         P.push('<rect data-handle="left" x="' + (bx - 3) + '" y="' + by + '" width="6" height="' + BAR_H + '" fill="transparent" style="cursor:ew-resize"/>');
         P.push('<rect data-handle="right" x="' + (bx + bw - 3) + '" y="' + by + '" width="6" height="' + BAR_H + '" fill="transparent" style="cursor:ew-resize"/>');
-        /* 标签 */
-        var needWidth = t.name.length * 6.5 + 10;
+        /* 标签：任务名 + 负责人 */
+        var label = t.resource ? t.name + ' · ' + t.resource : t.name;
+        var needWidth = label.length * 6.5 + 10;
         if (bw > needWidth + 12) {
-          P.push('<text x="' + (bx + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="11" fill="' + textColorFor(color) + '" font-family="system-ui, Segoe UI, sans-serif">' + esc(t.name) + '</text>');
+          P.push('<text x="' + (bx + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="11" fill="' + textColorFor(color) + '" font-family="system-ui, Segoe UI, sans-serif">' + esc(label) + '</text>');
         } else {
-          P.push('<text x="' + (bx + bw + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="11" fill="' + c.ink2 + '" font-family="system-ui, Segoe UI, sans-serif">' + esc(t.name) + '</text>');
+          P.push('<text x="' + (bx + bw + 6) + '" y="' + (by + BAR_H / 2 + 4) + '" font-size="11" fill="' + c.ink2 + '" font-family="system-ui, Segoe UI, sans-serif">' + esc(label) + '</text>');
         }
         P.push('</g>');
       }
